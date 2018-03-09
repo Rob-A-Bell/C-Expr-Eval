@@ -19,6 +19,17 @@
 /*********************
  *  PUBLIC INTERFACE
  *********************/
+typedef struct node_s node_2t;
+struct node_s {   
+   int data;       
+   node_2t* next;   
+};
+
+typedef struct {
+   node_2t* head;
+   node_2t* top;
+}IntStack_t;
+ 
  
 /*
  * Constructor - return a new, empty stack 
