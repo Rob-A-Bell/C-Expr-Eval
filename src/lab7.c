@@ -17,7 +17,6 @@
 #include "ds/stack.h"
 #include "ds/queue.h"
 #include "intStack/istack.h"
-
 // Helper Functions
 Queue_t tokenize(char* expression);
 bool isOperand(char* t);
@@ -234,8 +233,42 @@ Queue_t toPostfix(Queue_t infix_tokens)
 // POST: returns the result of evaluating the post-fix expression.
 int evalExpr(Queue_t expression)
 {
-
-	printf("NOT IMPLEMENTED YET -- that's your job ;-)\n");
-	return -1;  // STUB
+	 Node_t* cur = expression.head->next;
+ 	 IntStack_t calc = istackCreate();
+ 	 
+ 	 while(isOperand(cur->data)){
+	 		printf("  WERE IN ---");
+			istackPush(&calc, (int)*cur->data - 48); // subtract 48 to get the real int value from the ascii code
+			cur = cur->next;
+ 	 }// Stack is now loaded full of numbers
+ 	 
+ 	 istackPrint(calc);
+	int OPER;
+	int num_1, num_2, num_3;
+	while(cur != NULL){
+		num_2 = istackPop(&calc);
+		num_1 = istackPop(&calc);
+		OPER = (int)*cur->data;
+	
+		switch(OPER){
+			case 42:  num_3 = num_1 * num_2;
+			break;
+			case 43:  num_3 = num_1 + num_2;
+			break;
+			case 45: num_3 = num_1 - num_2;
+			break;
+			case 47: assert(num_2 != 0);
+			num_3 = num_1 / num_2;
+			break;
+	}
+		cur=cur->next;
+		if(cur != NULL){
+				istackPush(&calc, num_3);
+		}
+	}
+	assert(istackIsEmpty(calc));
+	
+//	printf("THE ANSWER IS %d \n", num_3);
+	return num_3;  // STUB
 
 }
