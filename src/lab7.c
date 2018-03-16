@@ -235,40 +235,39 @@ int evalExpr(Queue_t expression)
 {
 	 Node_t* cur = expression.head->next;
  	 IntStack_t calc = istackCreate();
- 	 
- 	 while(isOperand(cur->data)){
-	 		printf("  WERE IN ---");
-			istackPush(&calc, (int)*cur->data - 48); // subtract 48 to get the real int value from the ascii code
-			cur = cur->next;
- 	 }// Stack is now loaded full of numbers
- 	 
- 	 istackPrint(calc);
-	int OPER;
-	int num_1, num_2, num_3;
-	while(cur != NULL){
-		num_2 = istackPop(&calc);
-		num_1 = istackPop(&calc);
-		OPER = (int)*cur->data;
+ 	 int num_1, num_2, num_3, OPER;
+ 	  
+ 	 while(!qIsEmpty(expression)){
+ 	 	char* val = qDequeue(&expression);
+ 	 	printf("IN--- ");
+ 	 	if(isOperand(val)){
+ 	 		istackPush(&calc, operandValue(val));
+ 	 	}
+ 	 	if(isOperator(val)){
+ 		 	num_2 = istackPop(&calc);
+	 		num_1 = istackPop(&calc);
+
+		 	 // val;
 	
-		switch(OPER){
-			case 42:  num_3 = num_1 * num_2;
-			break;
-			case 43:  num_3 = num_1 + num_2;
-			break;
-			case 45: num_3 = num_1 - num_2;
-			break;
-			case 47: assert(num_2 != 0);
-			num_3 = num_1 / num_2;
-			break;
-	}
-		cur=cur->next;
-		if(cur != NULL){
+			switch(symbol(val)){
+		 		case '*':  num_3 = num_1 * num_2;
+		 		break;
+				case '+':  num_3 = num_1 + num_2;
+				break;
+				case '-': num_3 = num_1 - num_2;
+				break;
+				case '/': assert(num_2 != 0);
+				num_3 = num_1 / num_2;
+				break;
+			}
 				istackPush(&calc, num_3);
+			}
 		}
-	}
-	assert(istackIsEmpty(calc));
+
+
+//	assert(istackIsEmpty(calc));
 	
 //	printf("THE ANSWER IS %d \n", num_3);
-	return num_3;  // STUB
-
+	//return num_3;  // STUB
+return num_3;
 }
